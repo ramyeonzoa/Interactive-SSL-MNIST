@@ -536,8 +536,11 @@ else:
         settings = getattr(st.session_state, 'custom_settings', {})
         current_data_per_coin = settings.get('DATA_PER_COIN', DATA_PER_COIN)
         
+        # disabled 조건을 명시적으로 boolean으로 변환
+        is_disabled = bool(st.session_state.coins < 1 or int(unlabeled_count) < current_data_per_coin)
+        
         if st.button(f"🛒 데이터 {current_data_per_coin}개 구매 및 공부 (1🪙)", 
-                    disabled=st.session_state.coins < 1 or unlabeled_count < current_data_per_coin,
+                    disabled=is_disabled,
                     use_container_width=True):
             success, message = purchase_labeled_data()
             if success:
